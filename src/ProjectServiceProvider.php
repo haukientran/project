@@ -20,11 +20,17 @@ class ProjectServiceProvider extends ServiceProvider
   ]);
 
   // Tải routes
-  Route::middleware('web')
-      ->namespace('Project\Http\Controllers')
-      ->group(__DIR__.'/../routes/web.php');
+
+    $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+
+    // Load route admin
+    $this->loadRoutesFrom(__DIR__.'/../routes/admin.php');
 
   // Tải migrations
   $this->loadMigrationsFrom(__DIR__.'/../migrations');
+  
+  //Load view
+  $this->loadViewsFrom(__DIR__.'/../resources/views', 'project');
+
  }
 }
