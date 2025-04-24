@@ -1,7 +1,7 @@
 {
     "name": "project/project",
     "description": "Project management package for Laravel",
-    "version": "1.0.1",
+    "version": "1.0.3",
     
     "autoload": {
         "psr-4": {
