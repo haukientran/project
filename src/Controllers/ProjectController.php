@@ -9,6 +9,7 @@ use Project\Requests\Admin\ProjectRequest;
 use Project\Models\Project;
 use Illuminate\Http\Request;
 use App\Models\AdminUser;
+use GuzzleHttp\Client;
 
 class ProjectController extends Controller
 {
@@ -111,5 +112,46 @@ class ProjectController extends Controller
         $form_data[] = $form->switch('status', 'Trạng thái');
 
         return $form->render();
+    }
+
+    /**
+     * Show the form for build demo
+     */
+    public function buildDemo()
+    {
+        $title = 'Build Demo';
+        return view('project::admin.build-demo', compact('title'));
+    }
+
+    /**
+     * Process build demo form
+     */
+    public function processBuildDemo(Request $request)
+    {
+        $request->validate([
+            'demo_url' => 'required|url'
+        ]);
+
+        // Process the demo URL without storing in database
+        $demoUrl = $request->input('demo_url');
+        $domain = preg_replace('#^https?://#', '', $demoUrl);
+        
+        $client = new Client();
+        
+        $buildResponse = $client->post('https://jenkin.icweb.online/job/auto_deploy_by_laravel/buildWithParameters', [
+            'auth' => ['root', '116758e2d014765ec4b64270c1c4fc200f'],
+            'form_params' => [
+                'balancer' => '192.168.1.27',
+                'node' => '192.168.1.92',
+                'domain' => $domain,
+            ],
+        ]);
+
+        // Here you can add any processing logic for the demo URL
+        if ($buildResponse->getStatusCode()  == 201) {
+            return redirect()->back()->with('success', 'Dựng website dùng thử thành công: <a href="' . $demoUrl . '" target="_blank" style="text-decoration: underline; color: #2563eb;">' . $demoUrl . '</a>');
+        } else {
+            return redirect()->back()->with('success', 'Dựng website dùng thử không thành công!');
+        }
     }
 }

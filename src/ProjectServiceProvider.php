@@ -10,8 +10,6 @@ class ProjectServiceProvider extends ServiceProvider
  {
   // Đăng ký dịch vụ
   $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'project');
-  $this->mergeConfigFrom(__DIR__.'/../config/module.php', 'project.module');
-  $this->mergeConfigFrom(__DIR__.'/../config/menu.php', 'project.menu');
  }
 
  public function boot()
