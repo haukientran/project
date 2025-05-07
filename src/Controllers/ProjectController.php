@@ -149,6 +149,7 @@ class ProjectController extends Controller
 
         // Here you can add any processing logic for the demo URL
         if ($buildResponse->getStatusCode()  == 201) {
+            sleep(60); // Đợi 60 giây trước khi trả kết quả
             return redirect()->back()->with('success', 'Dựng website dùng thử thành công: <a href="' . $demoUrl . '" target="_blank" style="text-decoration: underline; color: #2563eb;">' . $demoUrl . '</a>');
         } else {
             return redirect()->back()->with('success', 'Dựng website dùng thử không thành công!');
